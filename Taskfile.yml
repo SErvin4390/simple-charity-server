@@ -31,3 +31,15 @@ docs:
   desc: Runs a godoc server locally
   cmds:
     - godoc -http=":6060"
+
+
+docker-build:
+  desc: Builds and tags the docker image
+  cmds: 
+    - docker build -t kvss/simple-charity-server .
+
+docker-run:
+  desc: Runs the latest built docker image
+  deps: ["docker-build"]
+  cmds:
+    - docker run kvss/simple-charity-server
