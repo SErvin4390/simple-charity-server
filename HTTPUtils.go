@@ -5,12 +5,12 @@ import (
 	"net/http"
 )
 
-//APIReturn represents a standard API return object
+// APIReturn represents a standard API return object
 type APIReturn struct {
 	Data interface{} `json:"data,omitempty"`
 }
 
-//Send standardizes the return from the API for 20X actions
+// Send standardizes the return from the API for 20X actions
 func Send(w http.ResponseWriter, code int, payload interface{}) {
 	ret := APIReturn{}
 	ret.Data = payload
@@ -20,7 +20,7 @@ func Send(w http.ResponseWriter, code int, payload interface{}) {
 	w.Write(response)
 }
 
-//SendError standardizes the return from the API for 40X actions
+// SendError standardizes the return from the API for 40X actions
 func SendError(w http.ResponseWriter, code int, message string) {
 	if message == "" {
 		switch code {

@@ -23,7 +23,7 @@ func main() {
 	http.ListenAndServe(Config.Port, router)
 }
 
-//SetupApp sets up the Chi Router and basic configuration for the application
+// SetupApp sets up the Chi Router and basic configuration for the application
 func SetupApp() *chi.Mux {
 	Config = ConfigSetup()
 
@@ -39,13 +39,13 @@ func SetupApp() *chi.Mux {
 	r.Use(middleware.Recoverer)
 	r.Use(tollbooth_chi.LimitHandler(limiter))
 
-	//set all routes here
+	// set all routes here
 	r.Get("/", NotImplementedRoute)
 
 	return r
 }
 
-//NotImplementedRoute is a simple route that simply returns a 501
+// NotImplementedRoute is a simple route that simply returns a 501
 func NotImplementedRoute(w http.ResponseWriter, r *http.Request) {
 	Send(w, 501, "Route Not Implemented")
 	return

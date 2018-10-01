@@ -6,14 +6,14 @@ import (
 	"os"
 	"time"
 
-	_ "github.com/go-sql-driver/mysql" //needed for side effects
+	_ "github.com/go-sql-driver/mysql" // needed for side effects
 	"github.com/jmoiron/sqlx"
 )
 
-//Config is the global configuration object
+// Config is the global configuration object
 var Config *ConfigStruct
 
-//ConfigStruct holds the various configuration options
+// ConfigStruct holds the various configuration options
 type ConfigStruct struct {
 	dbUser     string
 	dbPassword string
@@ -24,14 +24,14 @@ type ConfigStruct struct {
 	Port       string
 }
 
-//ConfigSetup sets up the config struct with data from the environment
+// ConfigSetup sets up the config struct with data from the environment
 func ConfigSetup() *ConfigStruct {
 	if Config != nil {
 		return Config
 	}
 	c := new(ConfigStruct)
 	rand.Seed(time.Now().UnixNano())
-	//setup the paths
+	// setup the paths
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -64,7 +64,7 @@ func ConfigSetup() *ConfigStruct {
 	dbConnectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", c.dbUser,
 		c.dbPassword, c.dbHost, c.dbPort, c.dbName)
 
-	//setup the DB
+	// setup the DB
 	conn, err := sqlx.Open("mysql", dbConnectionString)
 	if err != nil {
 		fmt.Printf("\nERROR FOUND\n%v\n\n", err)
@@ -72,12 +72,12 @@ func ConfigSetup() *ConfigStruct {
 	}
 	conn.SetMaxIdleConns(100)
 
-	//check the db
+	// check the db
 	_, err = conn.Exec("set session time_zone ='-0:00'")
 	maxTries := 10
 	secondsToWait := 5
 	if err != nil {
-		//we try again every X second for Y times, if it's still bad, we panic
+		// we try again every X second for Y times, if it's still bad, we panic
 		for i := 1; i <= maxTries; i++ {
 			fmt.Printf("\n\tDB Error, this is attempt %d of %d. Waiting %d seconds...\n", i, maxTries, secondsToWait)
 			time.Sleep(time.Duration(secondsToWait) * time.Second)
